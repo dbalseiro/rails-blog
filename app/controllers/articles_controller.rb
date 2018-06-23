@@ -2,6 +2,8 @@
 
 # Controller for the articles
 class ArticlesController < ApplicationController
+  before_action :authenticate_user!, except: %i[index search show]
+
   def index
     @articles = Article.all
   end

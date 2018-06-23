@@ -64,3 +64,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "geocoder", "~> 1.4"
 
 gem "devise", "~> 4.4"
+
+gem "slide-down-alerts-rails", "~> 0.0.2"
+
+gem "jquery-rails", "~> 4.3"
