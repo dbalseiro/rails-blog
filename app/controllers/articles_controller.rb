@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Controller for the articles
 class ArticlesController < ApplicationController
   def index
     @articles = Article.all
@@ -16,7 +19,7 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = Article.new (article_params)
+    @article = Article.new article_params
     if @article.save
       redirect_to @article
     else
@@ -26,7 +29,7 @@ class ArticlesController < ApplicationController
 
   def update
     @article = Article.find(params[:id])
-    if @article.update (article_params)
+    if @article.update article_params
       redirect_to @article
     else
       render 'update'
@@ -40,9 +43,10 @@ class ArticlesController < ApplicationController
   end
 
   private
-    def article_params
-      params
-        .require(:article)
-        .permit(:title, :text)
-    end
+
+  def article_params
+    params
+      .require(:article)
+      .permit(:title, :text, :city, :state, :zipcode)
+  end
 end

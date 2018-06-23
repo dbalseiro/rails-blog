@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Controller for the comments
 class CommentsController < ApplicationController
   def create
     @article = Article.find(params[:article_id])
@@ -13,9 +16,10 @@ class CommentsController < ApplicationController
   end
 
   private
-    def comment_params
-      params
-        .require(:comment)
-        .permit(:commenter, :body)
-    end
+
+  def comment_params
+    params
+      .require(:comment)
+      .permit(:commenter, :body)
+  end
 end

@@ -8,6 +8,15 @@
   <%= @article.text %>
 </p>
 
+<p>
+  <strong>Location</strong>
+  <ul>
+    <li><%= @article.city %></li>
+    <li><%= @article.state %></li>
+    <li><%= @article.zipcode %></li>
+  </ul>
+</p>
+
 <h2>Comments</h2>
 <%= render @article.comments %>
 
