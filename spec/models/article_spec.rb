@@ -81,7 +81,7 @@ RSpec.describe Article, type: :model do
 
       context 'and the criteria is text' do
         it 'returns the article that matches the text' do
-          params = { search: 'title', location: '' }
+          params = { search: 'TITLE', location: '' }
           articles = Article.search(params)
           expect(articles.length).to eq 1
         end

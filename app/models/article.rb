@@ -15,14 +15,11 @@ class Article < ApplicationRecord
   def self.search(params)
     articles = Article.all
     if params[:search].present?
-      articles = articles.where('title like ? or text like ?',
-                                "%#{params[:search]}%",
-                                "%#{params[:search]}%")
+      articles = articles.where('title like ?', "%#{params[:search]}%")
+                 .or articles.where('text like ?', "%#{params[:search]}%")
     end
 
-    if params[:location].present?
-      articles = articles.near(params[:location], 20)
-    end
+    articles = articles.near(params[:location], 20) if params[:location].present?
 
     articles
   end
