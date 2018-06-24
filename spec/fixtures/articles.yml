@@ -1,0 +1,14 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: 'title 1'
+  text: 'description'
+  city: 'New York'
+two:
+  title: 'title 2'
+  text: 'another article'
+  state: 'CA'
+three:
+  title: 'title 3'
+  text: 'description'
+  city: 'Houston'
