@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
+# Comments model
 class Comment < ApplicationRecord
   belongs_to :article
-  # TODO: validates_acceptance_of :human
+  validates_acceptance_of :human, allow_nil: false
 end
