@@ -7,7 +7,22 @@ RSpec.configure do |c|
 end
 
 RSpec.describe Article, type: :model do
-  describe '.full_article' do
+  it 'is valid with valid attributes' do
+    article = build :article
+    expect(article).to be_valid
+  end
+
+  it 'is invalid without a title' do
+    article = build :article, title: nil
+    expect(article).not_to be_valid
+  end
+
+  it 'is invalid with a title less than 5 characters' do
+    article = build :article, title: '123'
+    expect(article).not_to be_valid
+  end
+
+  describe '.full_address' do
     let(:article) { Article.new }
     context 'when the article is empty' do
       it 'returns an empty address' do
@@ -32,29 +47,66 @@ RSpec.describe Article, type: :model do
 
   describe '.search' do
     context 'when there are no articles' do
-      it 'returns an empty list'
+      it 'returns an empty list' do
+        params = { search: '', location: '' }
+        articles = Article.search(params)
+        expect(articles).to be_empty
+      end
     end
 
     context 'when there are many articles' do
+      before(:context) do
+        create :article
+      end
+
+      after(:context) do
+        Article.destroy_all
+      end
+
       context 'and the criteria is empty' do
-        it 'returns all the articles'
+        it 'returns all the articles' do
+          params = { search: '', location: '' }
+          articles = Article.search(params)
+          expect(articles.count).to eq 1
+        end
       end
 
       context 'and the criteria is location' do
-        it 'returns the article with the nearest location'
+        it 'returns the article with the nearest location' do
+          params = { search: '', location: 'Manhattan' }
+          articles = Article.search(params)
+          expect(articles.length).to eq 1
+        end
       end
 
       context 'and the criteria is text' do
-        it 'returns the article that matches the text'
-        it 'returns the article that matches the title'
+        it 'returns the article that matches the text' do
+          params = { search: 'title', location: '' }
+          articles = Article.search(params)
+          expect(articles.length).to eq 1
+        end
+
+        it 'returns the article that matches the title' do
+          params = { search: 'desc', location: '' }
+          articles = Article.search(params)
+          expect(articles.length).to eq 1
+        end
       end
 
       context 'and the criteria is for both location and text' do
-        it 'returns the article that matches both criteria'
+        it 'returns the article that matches both criteria' do
+          params = { search: 'tit', location: 'Manhattan' }
+          articles = Article.search(params)
+          expect(articles.length).to eq 1
+        end
       end
 
       context 'and the criteria does not match any article' do
-        it 'returnd an empty list'
+        it 'returnd an empty list' do
+          params = { search: 'title', location: 'TX' }
+          articles = Article.search(params)
+          expect(articles).to be_empty
+        end
       end
     end
   end
