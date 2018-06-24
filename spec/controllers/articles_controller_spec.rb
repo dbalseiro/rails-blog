@@ -45,10 +45,14 @@ RSpec.describe ArticlesController, type: :controller do
   describe 'GET #new' do
     it 'assigns a new article to @article' do
       get :new
-      expect(assigns(:article).title).to be nil
+      article = assigns :article
+      expect(article).not_to be nil
     end
 
-    it 'renders the :new template'
+    it 'renders the :new template' do
+      get :new
+      expect(response).to render_template('new')
+    end
   end
 
   describe 'POST #create' do
