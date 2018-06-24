@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
+  factory :comment do
+    commenter Faker::Simpsons.character
+    body Faker::Simpsons.quote
+    article { build(:article) }
+    human true
+  end
+
+  factory :invalid_comment, parent: :comment do |c|
+    c.article nil
+  end
+
+  factory :unaccepted_comment, parent: :comment do |c|
+    c.human nil
+  end
+
   factory :article do
     title 'title 1'
     text 'description'
