@@ -8,7 +8,7 @@ FactoryBot.define do
     human true
   end
 
-  factory :invalid_comment, parent: :comment do |c|
+  factory :comment_without_article, parent: :comment do |c|
     c.article nil
   end
 

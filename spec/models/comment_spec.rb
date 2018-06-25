@@ -14,7 +14,7 @@ RSpec.describe Comment, type: :model do
   end
 
   it 'is invalid without an article' do
-    comment = build :invalid_comment
+    comment = build :comment_without_article
     expect(comment).not_to be_valid
   end
 end
