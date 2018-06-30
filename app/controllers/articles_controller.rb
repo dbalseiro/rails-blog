@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
-# Controller for the articles
 class ArticlesController < ApplicationController
-  before_action :authenticate_user!, except: %i[index search show]
+  before_action :authenticate_user!, except: [:index, :search, :show]
+  before_action :fetch_article, only: [:show, :edit, :update, :destroy]
 
   def index
     @articles = Article.all
   end
 
   def search
-    @articles = Article.search(params)
+    @articles = Article.search(*search_params)
   end
 
   def show
-    @article = Article.find(params[:id])
   end
 
   def new
@@ -21,7 +20,6 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-    @article = Article.find(params[:id])
   end
 
   def create
@@ -34,7 +32,6 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    @article = Article.find(params[:id])
     if @article.update article_params
       redirect_to @article
     else
@@ -43,16 +40,21 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
-    @article = Article.find(params[:id])
     @article.destroy
     redirect_to articles_path
   end
 
   private
 
+  def fetch_article
+    @article = Article.find(params[:id])
+  end
+
   def article_params
-    params
-      .require(:article)
-      .permit(:title, :text, :city, :state, :zipcode)
+    params.require(:article).permit(*Article::ATTRIBUTE_WHITELIST)
+  end
+
+  def search_params
+    [params[:search], params[:location]]
   end
 end

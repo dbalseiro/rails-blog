@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# Comments model
 class Comment < ApplicationRecord
-  belongs_to :article
+  ATTRIBUTE_WHITELIST = [:commenter, :body, :human]
+
+  belongs_to :article, inverse_of: :comments
   validates_acceptance_of :human, allow_nil: false
 end

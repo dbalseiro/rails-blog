@@ -1,24 +1,20 @@
 # frozen_string_literal: true
 
-# Controller for the comments
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :fetch_article
 
   def create
-    @article = Article.find params[:article_id]
-    comment = @article.comments.new comment_params
-    if comment.valid?
-      comment.save
+    comment = @article.comments.build(comment_params)
+    if comment.save
       redirect_to @article
     else
       add_errors_from comment
-      @article.comments.delete comment
       render 'articles/show'
     end
   end
 
   def destroy
-    @article = Article.find params[:article_id]
     comment = @article.comments.find params[:id]
     comment.destroy
     redirect_to @article
@@ -26,10 +22,12 @@ class CommentsController < ApplicationController
 
   private
 
+  def fetch_article
+    @article = Article.find(params[:article_id])
+  end
+
   def comment_params
-    params
-      .require(:comment)
-      .permit(:commenter, :body, :human)
+    params.require(:comment).permit(*Comment::ATTRIBUTE_WHITELIST)
   end
 
   def add_errors_from(record)
